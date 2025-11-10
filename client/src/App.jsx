@@ -1,6 +1,5 @@
 // import { Suspense } from 'react'
 import { Outlet } from "react-router";
-import "./App.css";
 // import Users from './components/Users'
 import Users2 from "./components/Users2";
 import Header from "./components/Header";
@@ -14,7 +13,6 @@ function App() {
       <header>
         <Header></Header>
       </header>
-
       {/* UIVERSE.io, check index.css*/}
       {/* <div className="loader"></div> */}
       {/* <Users2 userPromise={userPromise}></Users2> */}

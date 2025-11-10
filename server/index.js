@@ -12,30 +12,9 @@ app.use(
   })
 );
 
-/* const users = [
-  { id: 1, name: "Shabana", email: "Shabana@gmail.com" },
-  { id: 2, name: "Aslam", email: "aslam@gmail.com" },
-  { id: 3, name: "kutta", email: "kutta@gmail.com" },
-];
- */
-/* app.get("/users", (req, res) => {
-  res.send(users);
-});
- */
-/* app.post('/users', (req, res) => {
-  const newUser = req.body;
-  newUser.id = users.length + 1
-  users.push(newUser)
- res.send(newUser)
-}) */
-
-/* 
- DB Start
- */
-
 const uri = `mongodb+srv://${process.env.DB_simpleUser}:${process.env.DB_pass}@cluster3.hxc1zsd.mongodb.net/?appName=Cluster3`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -48,7 +27,13 @@ async function run() {
   try {
     const userCollection = client.db("usersDB").collection("users");
     const jobCollection = client.db("jobPortalLastRecap").collection("allJobs");
-    app.post("/users", async (req, res) => {
+
+
+
+
+
+
+    /*     app.post("/users", async (req, res) => {
       const user = req.body;
       console.log(user);
       const result = await userCollection.insertOne(user);
@@ -64,8 +49,8 @@ async function run() {
       const result = await userCollection.deleteOne({ _id: new ObjectId(id) });
       res.send(result);
     });
-
-  /*   app.put("/users", async (req, res) => {
+ */
+    /*   app.put("/users", async (req, res) => {
       res.send(
         await userCollection.updateMany(
           { age: { $lt: 40 } },
@@ -73,6 +58,23 @@ async function run() {
         )
       );
     }); */
+
+    /* const users = [
+      { id: 1, name: "Shabana", email: "Shabana@gmail.com" },
+      { id: 2, name: "Aslam", email: "aslam@gmail.com" },
+      { id: 3, name: "kutta", email: "kutta@gmail.com" },
+    ];
+     */
+    /* app.get("/users", (req, res) => {
+      res.send(users);
+    });
+     */
+    /* app.post('/users', (req, res) => {
+      const newUser = req.body;
+      newUser.id = users.length + 1
+      users.push(newUser)
+     res.send(newUser)
+    }) */
 
     /*    app.patch("/users/:prevName", async (req, res) => {
       const prevName = req.params.prevName;
@@ -131,9 +133,9 @@ async function run() {
 
     // await client.connect();
     // await client.db("admin").command({ ping: 1 });
-    console.log(
+    /*     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    ); */
   } finally {
     // await client.close();
   }
@@ -145,7 +147,7 @@ run().catch(console.dir);
  */
 
 app.get("/", (req, res) => {
-  res.send("Simple crud running!");
+  res.send("Coffee crud revive!");
 });
 
 app.listen(port, () => {
