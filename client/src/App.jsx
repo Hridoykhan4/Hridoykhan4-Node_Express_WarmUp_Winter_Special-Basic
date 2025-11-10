@@ -11,17 +11,17 @@ import Header from "./components/Header";
 function App() {
   return (
     <>
-      <h2>Users Management</h2>
       <header>
         <Header></Header>
       </header>
 
-
+      {/* UIVERSE.io, check index.css*/}
+      {/* <div className="loader"></div> */}
       {/* <Users2 userPromise={userPromise}></Users2> */}
       <Outlet></Outlet>
       {/*   <Suspense fallback={<p>Loading...</p>}>
      <Users userPromise={userPromise}></Users>
-     </Suspense> */}  
+     </Suspense> */}
     </>
   );
 }

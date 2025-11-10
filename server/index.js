@@ -6,7 +6,11 @@ const app = express();
 const port = process.env.PORT || 5000;
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+  })
+);
 
 /* const users = [
   { id: 1, name: "Shabana", email: "Shabana@gmail.com" },
@@ -44,6 +48,40 @@ async function run() {
   try {
     const userCollection = client.db("usersDB").collection("users");
     const jobCollection = client.db("jobPortalLastRecap").collection("allJobs");
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
+    app.get("/users", async (req, res) => {
+      const result = await userCollection.find().sort({ age: -1 }).toArray();
+      res.send(result);
+    });
+
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await userCollection.deleteOne({ _id: new ObjectId(id) });
+      res.send(result);
+    });
+
+  /*   app.put("/users", async (req, res) => {
+      res.send(
+        await userCollection.updateMany(
+          { age: { $lt: 40 } },
+          { $set: { name: "Make Allah pleased" } }
+        )
+      );
+    }); */
+
+    /*    app.patch("/users/:prevName", async (req, res) => {
+      const prevName = req.params.prevName;
+      const { name } = req.body;
+      const query = { name: { $regex: prevName, $options: "i" } };
+      const result = await userCollection.updateOne(query, { $set: { name: name } });
+      console.log(result);
+      res.send(result || {});
+    }); */
 
     /*    app.get("/users", async (req, res) => {
       const result = await userCollection.find().toArray();
