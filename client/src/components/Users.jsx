@@ -13,12 +13,11 @@ const Users = ({ userPromise }) => {
       email,
     };
 
-    const { data: userNew } = await axios.post(
+    const { data } = await axios.post(
       "http://localhost:5000/users",
       userInfo
     );
-    console.log(userNew);
-    setUsers([...users, userNew]);
+    console.log(data);
   };
   return (
     <div>
