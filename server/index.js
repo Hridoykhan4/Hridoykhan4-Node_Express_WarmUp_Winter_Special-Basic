@@ -8,12 +8,16 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [
+      "http://localhost:5173",
+      "https://final-recap-firebase.web.app",
+      "https://final-recap-firebase.firebaseapp.com",
+      "https://winter-coffee-server.vercel.app",
+    ],
   })
 );
 
 const uri = `mongodb+srv://${process.env.DB_simpleUser}:${process.env.DB_pass}@cluster3.hxc1zsd.mongodb.net/?appName=Cluster3`;
-
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -25,13 +29,71 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const userCollection = client.db("usersDB").collection("users");
-    const jobCollection = client.db("jobPortalLastRecap").collection("allJobs");
+    /*     const userCollection = client.db("usersDB").collection("users");
+    const jobCollection = client.db("jobPortalLastRecap").collection("allJobs"); */
 
+    const coffeeCollection = client
+      .db("expressoCoffee")
+      .collection("allcoffees");
+    const usersCollection = client
+      .db("expressoCoffee")
+      .collection("coffee-users");
 
+    app.get("/coffees", async (req, res) => {
+      res.send(await coffeeCollection.find().toArray());
+    });
 
+    app.get("/coffees/:id", async (req, res) => {
+      res.send(
+        await coffeeCollection.findOne({ _id: new ObjectId(req.params.id) })
+      );
+    });
 
+    app.post("/coffees", async (req, res) => {
+      const newCoffee = req.body;
+      res.send(await coffeeCollection.insertOne(newCoffee));
+    });
 
+    app.delete("/coffees/:id", async (req, res) => {
+      res.send(
+        await coffeeCollection.deleteOne({ _id: new ObjectId(req.params.id) })
+      );
+    });
+
+    app.put("/coffees/:id", async (req, res) => {
+      res.send(
+        await coffeeCollection.updateOne(
+          { _id: new ObjectId(req.params.id) },
+          { $set: req.body }
+        )
+      );
+    });
+
+    /* Users APIs */
+
+    app.post("/users", async (req, res) => {
+      console.log(req.body);
+      res.send(await usersCollection.insertOne(req.body));
+    });
+
+    app.get("/users", async (req, res) => {
+      res.send(await usersCollection.find().toArray());
+    });
+
+    app.delete("/users/:id", async (req, res) => {
+      const result = await usersCollection.deleteOne({
+        _id: new ObjectId(req.params.id),
+      });
+      res.send(result);
+    });
+
+    app.patch("/users/:email", async (req, res) => {
+      const filter = { email: req.params.email };
+      const { lastSignInTime: creationTime } = req.body;
+      res.send(
+        await usersCollection.updateOne(filter, { $set: { creationTime } })
+      );
+    });
 
     /*     app.post("/users", async (req, res) => {
       const user = req.body;
